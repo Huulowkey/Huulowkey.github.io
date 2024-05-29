@@ -154,3 +154,6 @@ public:
     void createInvoice(int invoiceId, int customerId, const vector<InvoiceDetail>& details);
     void displayInvoices() const;
 };
+int main(){
+	return 0;
+}
