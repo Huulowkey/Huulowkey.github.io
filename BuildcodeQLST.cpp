@@ -156,5 +156,5 @@ public:
 };
 int main(){
 	return 0;
-cout << "OK";
+cout << "OKe";
 }
