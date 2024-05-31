@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include <iomanip>
 using namespace std;
 
 struct Product {
@@ -41,6 +42,7 @@ public:
     void updateProduct();
     void deleteProduct();
     void displayProducts() const;
+    void filter();
 };
 // Hàm thêm sản phẩm vào kho
 void ProductManager::addProduct() {
@@ -48,14 +50,14 @@ void ProductManager::addProduct() {
     char c;
     do {
         NodeProduct* P = new NodeProduct;
-        cout << "Enter Product ID: ";
+        cout << "ID: ";
         cin >> P->product.id;
         cin.ignore(); 
-        cout << "Enter Product Name: ";
+        cout << "Ten san pham: ";
         getline(cin, P->product.name);
-        cout << "Enter Product Price: ";
+        cout << "Gia ban: ";
         cin >> P->product.price;
-        cout << "Enter Product Quantity: ";
+        cout << "So luong: ";
         cin >> P->product.quantity;
         P->next = NULL;
 
@@ -68,7 +70,7 @@ void ProductManager::addProduct() {
         }
         sizeItem++;
 
-        cout << "Add more products to the storage? (y/n): ";
+        cout << "Tiep tuc them san pham? (y/n): ";
         cin >> c;
         if (c == 'y') check = true; 
         else check = false;
@@ -98,35 +100,118 @@ void ProductManager::updateProduct() {
     char check;
     do {
         int id;
-        cout << "Enter the product ID to update: ";
+        cout << "Nhap ID san pham can cap nhat: ";
         cin >> id;
         cin.ignore();
         NodeProduct* Q;
         Q = findProductById(id);
         if (Q==NULL) {
-            cout << "This product is not available!" << endl;
+            cout << "Khong tim thay san pham!" << endl;
         } else {
-            cout << "Enter Product Name: ";
+            cout << "Ten san pham: ";
             getline(cin, Q->product.name);
-            cout << "Enter Product Price: ";
+            cout << "Gia ban: ";
             cin >> Q->product.price;
-            cout << "Enter Product Quantity: ";
+            cout << "So luong: ";
             cin >> Q->product.quantity;
         }
-        cout << "Update more products in the storage? (y/n): ";
+        cout << "Tiep tuc cap nhat? (y/n): ";
         cin >> check;
     } while (check =='y');
 }
-// Hàm hiển thị tất cả sản phẩm trong kho
+// Hàm xóa sản phẩm 
+void ProductManager::deleteProduct() {
+    cout << "Nhan ID san pham can xoa: ";
+    int id;
+    cin >> id;
+    cin.ignore();
+    NodeProduct* Q;
+    Q = findProductById(id);
+    NodeProduct* P = Q;
+    if (Q==NULL) cout << "Khong tim thay san pham!";
+    if (S==Q && Q->next==NULL) {
+        S = NULL;
+        delete Q;
+    } else {
+        if (S==Q) {
+            S = Q->next;
+            delete Q;
+        } else {
+            NodeProduct* R = S;
+            while (R->next!=Q) R = R->next;
+            R->next = Q->next;
+            delete Q;
+        }
+        sizeItem--;
+        cout << "Da xoa san pham:  " << P->product.name << endl;
+    } 
+
+}
+// Hàm hiển thị tất cả sản phẩm hiện có
 void ProductManager::displayProducts() const {
+    cout << "So loai mat hang:  " << getSizeItem() << endl;
     NodeProduct* P = S;
+    cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+    cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
     while(P!=NULL) {
-        cout << "ID: " << P->product.id << ", Name: " << P->product.name << ", Price: " << P->product.price << ", Quantity: " << P->product.quantity << endl;
+        cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
         P = P->next;
     }
 };
+// Hàm lọc sản phẩm theo ID, tên, khoảng giá
+void ProductManager::filter() {
+    cout << "1. ID\n2. Ten san pham\n3. Khoang gia\n";
+    int a, id;
+    cout << "Ban chon: ";
+    cin >> a;
+    char check;
+    string tensp;
+    switch (a)
+    {
+    case 1:
+        do {
+            cout << "Nhap ID: ";
+            cin >> id;
+            cin.ignore();
+            NodeProduct* P;
+            P = findProductById(id);
+            if (P==NULL) {
+                cout << "Khong tim thay san pham!" << endl;
+            } else {
+                cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+                cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+            }
+            cout << "Tiep tuc tim kiem? (y/n): ";
+            cin >> check;
+        } while (check =='y');
+        break;
+    case 2:
+        cout << "Nhap ten san pham: ";
+        cin.ignore();
+        getline(cin, tensp);
+        NodeProduct* P;
+        P = S;
+        cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+        cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+        while(P!=NULL) {
+        if (P->product.name.find(tensp)!=string::npos) {
+            cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+        }
+        P = P->next;
+        }
+        break;
+    case 3:
+        break;
+    default:
+        cout << "Khong hop le, vui long thu lai!";
+        break;
+    }
+}
 
 
+
+// Thành 
 class CustomerManager {
 private:
     CustomerList C;
@@ -142,19 +227,7 @@ public:
 };
 
 
-
-
-class InvoiceManager {
-private:
-    vector<Invoice> invoices;
-    ProductManager& productManager;
-    CustomerManager& customerManager;
-public:
-    InvoiceManager(ProductManager& pm, CustomerManager& cm) : productManager(pm), customerManager(cm) {}
-    void createInvoice(int invoiceId, int customerId, const vector<InvoiceDetail>& details);
-    void displayInvoices() const;
-};
-int main(){
+int main() {
 	return 0;
 cout << "OKe";
 }
