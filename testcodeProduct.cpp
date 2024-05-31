@@ -114,7 +114,6 @@ void ProductManager::deleteProduct() {
     cout << "Nhan ID san pham can xoa: ";
     int id;
     cin >> id;
-    cin.ignore();
     NodeProduct* Q;
     Q = findProductById(id);
     NodeProduct* P = Q;
