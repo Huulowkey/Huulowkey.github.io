@@ -94,7 +94,6 @@ void ProductManager::updateProduct() {
         int id;
         cout << "Nhap ID san pham can cap nhat: ";
         cin >> id;
-        cin.ignore();
         NodeProduct* Q;
         Q = findProductById(id);
         if (Q==NULL) {
