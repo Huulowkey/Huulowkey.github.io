@@ -115,7 +115,6 @@ void ProductManager::deleteProduct() {
     cout << "Nhan ID san pham can xoa: ";
     int id;
     cin >> id;
-    cin.ignore();
     NodeProduct* Q;
     Q = findProductById(id);
     NodeProduct* P = Q;
@@ -159,17 +158,17 @@ void ProductManager::filter() {
     cout << "Ban chon: ";
     cin >> a;
     char check;
+    double min, max;
     string tensp;
-    switch (a)
-    {
+    NodeProduct* P;
+    switch (a) {
     case 1:
         do {
             cout << "Nhap ID: ";
             cin >> id;
             cin.ignore();
-            NodeProduct* P;
             P = findProductById(id);
-            if (P==NULL) {
+            if (P == NULL) {
                 cout << "Khong tim thay san pham!" << endl;
             } else {
                 cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
@@ -178,25 +177,44 @@ void ProductManager::filter() {
             }
             cout << "Tiep tuc tim kiem? (y/n): ";
             cin >> check;
-        } while (check =='y');
+        } while (check == 'y');
         break;
+
     case 2:
         cout << "Nhap ten san pham: ";
         cin.ignore();
         getline(cin, tensp);
-        NodeProduct* P;
         P = S;
         cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
         cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
-        while(P!=NULL) {
-        if (P->product.name.find(tensp)!=string::npos) {
-            cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
-        }
-        P = P->next;
+        while (P != NULL) {
+            if (P->product.name.find(tensp) != string::npos) {
+                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+            }
+            P = P->next;
         }
         break;
+
     case 3:
+        cout << "Toi thieu: ";
+        cin >> min;
+        cout << "Toi da: ";
+        cin >> max;
+        if (min > max) {
+            cout << "Khoang gia khong hop le!" << endl;
+            break;
+        }
+        P = S;
+        cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+        cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+        while (P != NULL) {
+            if ((P->product.price >= min) && (P->product.price <= max)) {
+                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+            }
+            P = P->next;
+        }
         break;
+
     default:
         cout << "Khong hop le, vui long thu lai!";
         break;
@@ -205,8 +223,8 @@ void ProductManager::filter() {
 int main() {
     ProductManager productManager;
     productManager.addProduct();
-    productManager.updateProduct();
-    productManager.deleteProduct();
+   // productManager.updateProduct();
+   // productManager.deleteProduct();
     productManager.displayProducts();
     productManager.filter();
     return 0;
