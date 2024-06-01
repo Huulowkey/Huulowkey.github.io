@@ -87,7 +87,7 @@ NodeProduct* ProductManager::findProductById(int id) {
     }
     return NULL;
 }
-// Hàm cập nhật các sản phẩm muốn thay đổi(tên, giá, số lượng)_ID không cố định 
+// Hàm cập nhật các sản phẩm muốn thay đổi(tên, giá, số lượng) - ID là cố định với mỗi loại sản phẩm
 void ProductManager::updateProduct() {
     char check;
     do {
