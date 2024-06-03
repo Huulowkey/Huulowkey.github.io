@@ -69,7 +69,6 @@ void ProductManager::addProduct() {
             R->next = P;
         }
         sizeItem++;
-
         cout << "Tiep tuc them san pham? (y/n): ";
         cin >> c;
         if (c == 'y') check = true; 
@@ -87,7 +86,7 @@ NodeProduct* ProductManager::findProductById(int id) {
     }
     return NULL;
 }
-// Hàm cập nhật các sản phẩm muốn thay đổi(tên, giá, số lượng)_ID không cố định 
+// Hàm cập nhật các sản phẩm muốn thay đổi(tên, giá, số lượng) - ID là cố định với mỗi loại sản phẩm
 void ProductManager::updateProduct() {
     char check;
     do {
@@ -116,7 +115,6 @@ void ProductManager::deleteProduct() {
     cout << "Nhan ID san pham can xoa: ";
     int id;
     cin >> id;
-    cin.ignore();
     NodeProduct* Q;
     Q = findProductById(id);
     NodeProduct* P = Q;
@@ -137,7 +135,6 @@ void ProductManager::deleteProduct() {
         sizeItem--;
         cout << "Da xoa san pham:  " << P->product.name << endl;
     } 
-
 }
 // Hàm hiển thị tất cả sản phẩm hiện có
 void ProductManager::displayProducts() const {
