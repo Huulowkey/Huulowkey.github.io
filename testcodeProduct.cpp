@@ -41,6 +41,7 @@ public:
     NodeProduct* findProductById(int id);
     void updateProduct();
     void deleteProduct();
+    void sortProduct();
     void displayProducts() const;
     void filter();
 };
@@ -147,6 +148,18 @@ void ProductManager::displayProducts() const {
         P = P->next;
     }
 };
+void ProductManager::sortProduct() {
+    cout << "1. Sap xep theo gia ban\n2. Sap xep theo so luong  "
+    switch (s)
+    {
+    case /* constant-expression */:
+        /* code */
+        break;
+    
+    default:
+        break;
+    }
+}
 // Loc tim kiem (id, ten, khoang gia)
 //id: chi 1 
 //ten: tu goi y

@@ -1,0 +1,5 @@
+ID        Ten san pham             Gia ban   So luong  Thanh tien
+--------  -----------------------  --------  --------  --------  
+1         sua dau nanh             5000      2         10000     
+2         sua ong tho              25000     1         25000     
+Tong tien: 35000
