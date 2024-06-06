@@ -6,7 +6,8 @@ using namespace std;
 struct Product {
     int id;
     string name;
-    double price;
+    double purchasePrice;
+    double salePrice;
     int quantity;
 };
 
@@ -29,7 +30,7 @@ struct NodeCustomer {
 };
 typedef NodeCustomer* CustomerList;
 
-// Tạo đối tượng Quản lý sản phẩm, khai báo các thuộc tính và phương thức hàm(thêm, tìm kiếm, cập nhật, xóa) và khởi tạo danh sách liên kết rỗng
+// Tạo đối tượng Quản lý sản phẩm, khai báo các thuộc tính và phương thức hàm(thêm, tìm kiếm, cập nhật, xóa, lọc) và khởi tạo danh sách liên kết rỗng
 class ProductManager {
 private:
     Storage S;
@@ -55,8 +56,10 @@ void ProductManager::addProduct() {
         cin.ignore(); 
         cout << "Ten san pham: ";
         getline(cin, P->product.name);
+        cout << "Gia nhap: ";
+        cin >> P->product.purchasePrice;
         cout << "Gia ban: ";
-        cin >> P->product.price;
+        cin >> P->product.salePrice;
         cout << "So luong: ";
         cin >> P->product.quantity;
         P->next = NULL;
@@ -69,6 +72,7 @@ void ProductManager::addProduct() {
             R->next = P;
         }
         sizeItem++;
+
         cout << "Tiep tuc them san pham? (y/n): ";
         cin >> c;
         if (c == 'y') check = true; 
@@ -93,7 +97,6 @@ void ProductManager::updateProduct() {
         int id;
         cout << "Nhap ID san pham can cap nhat: ";
         cin >> id;
-        cin.ignore();
         NodeProduct* Q;
         Q = findProductById(id);
         if (Q==NULL) {
@@ -101,8 +104,10 @@ void ProductManager::updateProduct() {
         } else {
             cout << "Ten san pham: ";
             getline(cin, Q->product.name);
+            cout << "Gia nhap: ";
+            cin >> Q->product.purchasePrice;
             cout << "Gia ban: ";
-            cin >> Q->product.price;
+            cin >> Q->product.salePrice;
             cout << "So luong: ";
             cin >> Q->product.quantity;
         }
@@ -140,10 +145,10 @@ void ProductManager::deleteProduct() {
 void ProductManager::displayProducts() const {
     cout << "So loai mat hang:  " << getSizeItem() << endl;
     NodeProduct* P = S;
-    cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
-    cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+    cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia nhap" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+    cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << setw(10) << "--------" << endl;
     while(P!=NULL) {
-        cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+        cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.purchasePrice << setw(10) << P->product.salePrice << setw(10) << P->product.quantity << endl;
         P = P->next;
     }
 };
@@ -158,7 +163,7 @@ void ProductManager::filter() {
     string tensp;
     NodeProduct* P;
     switch (a) {
-    case 1: // Lọc theo ID
+    case 1:
         do {
             cout << "Nhap ID: ";
             cin >> id;
@@ -167,31 +172,30 @@ void ProductManager::filter() {
             if (P == NULL) {
                 cout << "Khong tim thay san pham!" << endl;
             } else {
-                cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
-                cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
-                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
-            }
+                cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia nhap" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+                cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.purchasePrice << setw(10) << P->product.salePrice << setw(10) << P->product.quantity << endl; }
             cout << "Tiep tuc tim kiem? (y/n): ";
             cin >> check;
         } while (check == 'y');
         break;
 
-    case 2: // Lọc theo tên sản phẩm
+    case 2:
         cout << "Nhap ten san pham: ";
         cin.ignore();
         getline(cin, tensp);
         P = S;
-        cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
-        cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+        cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia nhap" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+        cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << setw(10) << "--------" << endl;
         while (P != NULL) {
             if (P->product.name.find(tensp) != string::npos) {
-                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.purchasePrice << setw(10) << P->product.salePrice << setw(10) << P->product.quantity << endl;
             }
             P = P->next;
         }
         break;
 
-    case 3: // Lọc theo khoảng giá 
+    case 3:
         cout << "Toi thieu: ";
         cin >> min;
         cout << "Toi da: ";
@@ -201,11 +205,11 @@ void ProductManager::filter() {
             break;
         }
         P = S;
-        cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
-        cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << endl;
+        cout << left << setw(10) << "ID" << setw(25) << "Ten san pham" << setw(10) << "Gia nhap" << setw(10) << "Gia ban" << setw(10) << "So luong" << endl;
+        cout << left << setw(10) << "--------" << setw(25) << "-----------------------" << setw(10) << "--------" << setw(10) << "--------" << setw(10) << "--------" << endl;
         while (P != NULL) {
-            if ((P->product.price >= min) && (P->product.price <= max)) {
-                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.price << setw(10) << P->product.quantity << endl;
+            if ((P->product.salePrice >= min) && (P->product.salePrice <= max)) {
+                cout << left << setw(10) << P->product.id << setw(25) << P->product.name << setw(10) << P->product.purchasePrice << setw(10) << P->product.salePrice << setw(10) << P->product.quantity << endl;
             }
             P = P->next;
         }
@@ -215,27 +219,4 @@ void ProductManager::filter() {
         cout << "Khong hop le, vui long thu lai!";
         break;
     }
-}
-
-
-
-// Thành 
-class CustomerManager {
-private:
-    CustomerList C;
-    int sizeList;
-public:
-    CustomerManager() : C(NULL), sizeList(0) {}
-    void addCustomer();
-    int getSizeList() const { return sizeList; }
-    void updateCustomer(const string& phone, const string& name, long point);
-    void deleteCustomer(int id);
-    Customer* findCustomerById(int id);
-    void displayCustomers() const;
-};
-
-
-int main() {
-	return 0;
-cout << "OKe";
 }
