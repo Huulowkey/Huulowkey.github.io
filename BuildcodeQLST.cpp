@@ -11,24 +11,12 @@ struct Product {
     int quantity;
 };
 
-struct Customer {
-    string phone;
-    string name;
-    long point;
-};
 // Tạo danh sách liên kết cho Sản phẩm
 struct NodeProduct {
     Product product;
     NodeProduct* next;
 };
 typedef NodeProduct* Storage;
-
-// Tạo danh sách liên kết cho Khách hàng
-struct NodeCustomer {
-    Customer customer;
-    NodeCustomer* next;
-};
-typedef NodeCustomer* CustomerList;
 
 // Tạo đối tượng Quản lý sản phẩm, khai báo các thuộc tính và phương thức hàm(thêm, tìm kiếm, cập nhật, xóa, lọc) và khởi tạo danh sách liên kết rỗng
 class ProductManager {
