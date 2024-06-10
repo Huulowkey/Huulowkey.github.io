@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <time.h>
 using namespace std;
-
+int random(int minN, int maxN){
+	return minN + rand() % (maxN + 1 - minN);
+}
 // Ngày - Định dạng dd/mm/yyyy
 struct Date {
 	int day;
@@ -297,8 +299,8 @@ public:
     NodeCustomer* findCustomerByPhone(const string& phone);
     void displayCustomers() const;
     NodeCustomer* lastCustomer();
+    void UpdatePoint(const string& phone, int point, bool TrangThai);
 };
-
 // Hàm thêm khách hàng vào danh sách
 void CustomerManager::addCustomer() {
     bool check;
@@ -403,7 +405,14 @@ NodeCustomer* CustomerManager::lastCustomer() {
         return P;
     }
 }
-
+void CustomerManager::UpdatePoint(const string& phone, int point, bool TrangThai) {
+    NodeCustomer* Q = findCustomerByPhone(phone);
+    if (Q == NULL) {
+        cout << "This customer is not available!" << endl;
+        return;
+    }
+    Q->customer.point += TrangThai * point;
+}
 // Lịch sử bán hàng và doanh thu, lợi nhuận
 struct Bill {
 	Date date;
@@ -433,6 +442,14 @@ class InvoiceHistory {
 		void XuatHoaDon(int id, ProductManager list);
 		void XuatDoanhThuTheo();
 		void LichSuMuaHangCuaKhach(CustomerManager list);
+        int SoBatKy() {
+			while(1) {
+				int r = random(100000, 999999);
+				if (FindBill(r) == NULL) {
+					return r;
+				}
+			}
+		}
 };
 void InvoiceHistory::DisPlayBill() {
 	cout << ">> Toan bo lich su hoa don <<" << endl;
@@ -450,6 +467,7 @@ void InvoiceHistory::addBill(Date date, int id, string name, ProductManager list
 	P->info.date = date;
 	P->info.ID = id;
 	P->info.List = list;
+    P->info.Name = name;
 	P->info.Sum = list.totalAmount();
 	if (DsBill == NULL) {
 		DsBill = P;
@@ -551,6 +569,12 @@ void InvoiceHistory::BanHang(CustomerManager& khach, ProductManager& kho) {
             cout << P->customer.point;
 		} else {khach.lastCustomer();}         
 	}
+    int s = SoBatKy();
+	cout << "Ma so cua hoa don: " << s << endl;
+    khach.UpdatePoint(P->customer.phone, DsMua.totalAmount(), 1);
+	addBill(date, s, P->customer.phone, DsMua);
+	XuatHoaDon(s, DsMua);
+	return;
 }
 void InvoiceHistory::XuatDoanhThuTheo() {
 	Date d;
@@ -580,7 +604,6 @@ void InvoiceHistory::LichSuMuaHangCuaKhach(CustomerManager list) {
 		if (c == 'y') goto a; else return;
 		
 	}
-	cout << "Hello";
 	NodeBill* P = DsBill;
 	while(P != NULL) {
 		if (!id.compare(P->info.Name)) {
@@ -590,6 +613,7 @@ void InvoiceHistory::LichSuMuaHangCuaKhach(CustomerManager list) {
 	}
 }
 int main() {
+    srand((int)time(0));
     ProductManager productManager;
     CustomerManager customerManager;
     InvoiceHistory invoiceHistory;
